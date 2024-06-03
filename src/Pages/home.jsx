@@ -5,8 +5,9 @@ import axios from "axios";
 import { UrlP } from "../constant/constant";
 import HomeProduct from "../components/layout/HomeProduct";
 import Footer from "../components/layout/Footer";
-import ModalWrapper from "../components/roots/ModalWrapper";
-import Modal from "../components/element/Modal";
+
+import ModalFilter from "../components/element/FilterModal";
+import ModalWish from "../components/element/WishlistModal";
 import SearchProvider from "../hooks/Search";
 import FilterProvider from "..//hooks/filter";
 
@@ -70,7 +71,8 @@ const HomePage = () => {
         </main>
         <Footer loading={loading} />
 
-        <Modal />
+        <ModalFilter />
+        <ModalWish />
       </FilterProvider>
     </SearchProvider>
   );

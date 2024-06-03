@@ -4,6 +4,7 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./Pages/home.jsx";
 import NotFoundPage from "./Pages/404.jsx";
+import WishListProvider from "./context/WishListContext.jsx";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <WishListProvider>
+      <RouterProvider router={router} />
+    </WishListProvider>
   </React.StrictMode>
 );

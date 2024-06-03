@@ -3,7 +3,7 @@ import React, { createContext, useEffect, useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { GrPowerReset } from "react-icons/gr";
 import FilterButton from "../common/FilterButton";
-import ModalWrapper from "../roots/ModalWrapper";
+import ModalWrapper from "../roots/FilterModalWrapper";
 import { useFilter } from "../../hooks/filter";
 
 const filterButton = [
@@ -16,7 +16,7 @@ const filterButton = [
   { id: "R7", name: "Most Reviewed" },
 ];
 
-const Modal = () => {
+const FilterModal = () => {
   const { selectedOption, setSelectedOption, openFilter, handleOpenFilter } =
     useFilter();
 
@@ -42,7 +42,7 @@ const Modal = () => {
       >
         <div className="flex justify-between items-center mb-4">
           <button
-            className="back block py-2 px-2 bg-slate-200 rounded-lg"
+            className="back block py-2 px-2 bg-gray-200 hover:bg-gray-300 rounded-lg"
             aria-label="backToSection"
             title="Back To Section"
             onClick={handleOpenFilter}
@@ -51,7 +51,7 @@ const Modal = () => {
           </button>
           <p className="font-semibold">Filter Setting</p>
           <button
-            className="reset block py-2 px-2 bg-slate-200 rounded-lg"
+            className="reset block py-2 px-2 bg-gray-200 hover:bg-gray-300 rounded-lg"
             title="Reset"
             aria-label="Reset Filter"
             onClick={handleReset}
@@ -85,4 +85,4 @@ const Modal = () => {
   );
 };
 
-export default Modal;
+export default FilterModal;

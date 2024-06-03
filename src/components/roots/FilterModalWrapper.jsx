@@ -20,7 +20,7 @@ const ModalWrapper = ({ openFilter, handleOpenFilter, children }) => {
         <div
           ref={overlayRef}
           role="dialog"
-          className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity duration-500"
+          className="modal fixed inset-0 bg-black bg-opacity-50 z-50 backdrop-blur-sm transition-opacity duration-500 "
         ></div>
       </CSSTransition>
       <CSSTransition

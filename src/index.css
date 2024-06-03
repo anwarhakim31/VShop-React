@@ -24,3 +24,12 @@ body {
 .swiper {
   z-index: 0 !important;
 }
+
+::-webkit-scrollbar {
+  background-color: whitesmoke;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 0.5rem;
+}

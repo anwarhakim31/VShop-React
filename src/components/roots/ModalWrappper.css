@@ -1,5 +1,13 @@
 /* src/roots/ModalWrapper.css */
 
+.modal {
+  z-index: 100 !important;
+}
+
+/* .primary-wishlist::-webkit-scrollbar {
+  display: none;
+} */
+
 /* Overlay Transitions */
 .modal-overlay-enter {
   opacity: 0;
