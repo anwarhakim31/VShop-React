@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+@layer base {
+  .text-primary {
+    @apply text-slate-800;
+  }
+  .bg-primary {
+    @apply bg-slate-800;
+  }
+}
+
+@layer components {
+  body {
+    @apply text-slate-800;
+  }
+}
+
+.swiper {
+  z-index: 0 !important;
+}

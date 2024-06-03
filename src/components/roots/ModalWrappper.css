@@ -1,0 +1,37 @@
+/* src/roots/ModalWrapper.css */
+
+/* Overlay Transitions */
+.modal-overlay-enter {
+  opacity: 0;
+}
+.modal-overlay-enter-active {
+  opacity: 1;
+  transition: all 0.3s ease-in-out;
+}
+.modal-overlay-exit {
+  opacity: 1;
+}
+.modal-overlay-exit-active {
+  opacity: 0;
+  transition: opacity 100ms;
+}
+
+/* Modal Transitions */
+.modal-enter {
+  opacity: 0;
+  transform: scale(0.95);
+}
+.modal-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: all 0.3s ease-in-out;
+}
+.modal-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+.modal-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 0.1s linear;
+}
