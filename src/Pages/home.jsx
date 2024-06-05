@@ -6,8 +6,8 @@ import { UrlP } from "../constant/constant";
 import HomeProduct from "../components/layout/HomeProduct";
 import Footer from "../components/layout/Footer";
 
-import ModalFilter from "../components/element/FilterModal";
-import ModalWish from "../components/element/WishlistModal";
+import ModalFilter from "../components/element/products/FilterModal";
+import Modal from "../components/fragments/Modal";
 import SearchProvider from "../hooks/Search";
 import FilterProvider from "..//hooks/filter";
 
@@ -72,7 +72,7 @@ const HomePage = () => {
         <Footer loading={loading} />
 
         <ModalFilter />
-        <ModalWish />
+        <Modal />
       </FilterProvider>
     </SearchProvider>
   );

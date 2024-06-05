@@ -2,9 +2,9 @@
 import React, { createContext, useEffect, useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { GrPowerReset } from "react-icons/gr";
-import FilterButton from "../common/FilterButton";
-import ModalWrapper from "../roots/FilterModalWrapper";
-import { useFilter } from "../../hooks/filter";
+import FilterButton from "../../common/FilterButton";
+import ModalWrapper from "../../roots/FilterModalWrapper";
+import { useFilter } from "../../../hooks/filter";
 
 const filterButton = [
   { id: "R1", name: "Relevance" },

@@ -1,5 +1,5 @@
 import React from "react";
-import image from "../../assets/images/server-error.png";
+import image from "../../../assets/images/server-error.png";
 
 const ServerError = ({ handleReload }) => {
   return (

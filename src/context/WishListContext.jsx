@@ -51,11 +51,6 @@ export const useWish = () => {
 
 const WishListProvider = ({ children }) => {
   const [state, dispatch] = useReducer(wishListReducer, initialState);
-  const [iSep, setIsep] = useState(false);
-
-  const handleToggleCart = () => {
-    setIsep(!iSep);
-  };
 
   const handleToggleWish = () => {
     dispatch({ type: TOGGLE_WISH_LIST });
@@ -103,8 +98,6 @@ const WishListProvider = ({ children }) => {
         dispatch,
         handleToggleWish,
         handleToWishList,
-        handleToggleCart,
-        iSep,
       }}
     >
       {children}

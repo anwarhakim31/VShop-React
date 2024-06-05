@@ -1,10 +1,9 @@
 import React from "react";
 import { useWish } from "../../context/WishListContext";
 import { IoMdClose } from "react-icons/io";
+import { formatCurrency } from "../../constant/constant";
 const WishList = ({ item }) => {
   const { handleToggleWish, state, dispatch } = useWish();
-
-  const wishlist = state.wishlist;
 
   const handleRemoveFromWishlist = (id) => {
     dispatch({ type: "DELETE_FROM_LIST", payload: id });
@@ -15,7 +14,7 @@ const WishList = ({ item }) => {
   };
 
   return (
-    <li
+    <div
       key={item.id}
       className="flex items-center py-4 border-b-2 border-dotted border-gray-200 "
     >
@@ -43,7 +42,9 @@ const WishList = ({ item }) => {
           </button>
         </div>
         <div className="flex justify-between items-center mt-4">
-          <span className="font-bold text-sm ">${item.price} USD</span>
+          <span className="font-bold text-sm ">
+            $ {formatCurrency(item.price)} USD
+          </span>
           <button
             aria-label="addToCart"
             className="py-1.5 px-4 rounded-lg bg-primary text-sm font-medium text-white hover:bg-secon"
@@ -52,7 +53,7 @@ const WishList = ({ item }) => {
           </button>
         </div>
       </div>
-    </li>
+    </div>
   );
 };
 

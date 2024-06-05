@@ -3,23 +3,31 @@ import ReactDOM from "react-dom";
 import { CSSTransition } from "react-transition-group";
 import { useWish } from "../../context/WishListContext";
 import "../roots/ModalWrappper.css"; // Pastikan penamaan file benar
+import { useSelector } from "react-redux";
+import useToggleCart from "../../hooks/redux/toggleCart";
+import useToggleProduct from "../../hooks/redux/toggleProduct";
 
-const WishlistModalWrapper = ({ children }) => {
-  const { state, handleToggleWish, iSep, handleToggleCart } = useWish();
+const ModalWrapper = ({ children }) => {
+  const { state, handleToggleWish } = useWish();
   const overlayRef = useRef();
   const nodeRef = useRef();
-
+  const openCart = useSelector((state) => state.cart.openCart);
+  const handleToggleCart = useToggleCart();
+  const productFunction = useToggleProduct();
   const [isOpen, setIsOpen] = useState({
-    open: state.openWish || iSep,
-    toggle: state.openWish ? handleToggleWish : handleToggleCart,
+    open: state.openWish,
+    toggle: handleToggleWish,
   });
 
   useEffect(() => {
     setIsOpen({
-      open: state.openWish || iSep,
-      toggle: state.openWish ? handleToggleWish : handleToggleCart,
+      open: state.openWish || openCart || productFunction.openProduct,
+      toggle:
+        (state.openWish && handleToggleWish) ||
+        (openCart && handleToggleCart) ||
+        (productFunction.openProduct && productFunction.handleCloseProduct),
     });
-  }, [state.openWish, iSep, handleToggleWish, handleToggleCart]);
+  }, [state.openWish, handleToggleWish, openCart, productFunction.openProduct]);
 
   return ReactDOM.createPortal(
     <>
@@ -33,7 +41,7 @@ const WishlistModalWrapper = ({ children }) => {
         <div
           ref={overlayRef}
           role="dialog"
-          className="fixed z-[50] inset-0 bg-black bg-opacity-50 backdrop-blur-sm transition-opacity duration-500"
+          className="fixed z-[50]  inset-0 bg-black  bg-opacity-50 backdrop-blur-sm transition-opacity duration-500"
           onClick={() => isOpen.toggle()}
         ></div>
       </CSSTransition>
@@ -62,4 +70,4 @@ const WishlistModalWrapper = ({ children }) => {
   );
 };
 
-export default WishlistModalWrapper;
+export default ModalWrapper;

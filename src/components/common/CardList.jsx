@@ -5,8 +5,16 @@ import { split } from "postcss/lib/list";
 import { useWish } from "../../context/WishListContext";
 import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
+import useToggleProduct from "../../hooks/redux/toggleProduct";
+import { setSelectedProduct } from "../../redux/slices/productSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { formatCurrency } from "../../constant/constant";
+
 const CardList = ({ product }) => {
   const { handleToWishList, state, dispatch } = useWish();
+  const reduxDispatch = useDispatch();
+  const productFunction = useToggleProduct();
+
   const isWish = state.wishlist.some((item) => {
     return item.id === product.id;
   });
@@ -17,6 +25,19 @@ const CardList = ({ product }) => {
     if (state.wishlist.length === 1) {
       localStorage.removeItem("VShopWishlist");
     }
+  };
+
+  const handleOpenDetailsProdcut = (product) => {
+    productFunction.handleOpenProduct();
+
+    reduxDispatch(
+      setSelectedProduct({
+        ...product,
+        quantity: 1,
+        totalPrice: product.price,
+        id: product.id,
+      })
+    );
   };
 
   return (
@@ -53,8 +74,9 @@ const CardList = ({ product }) => {
         className=" group w-full relative  mt-2 rounded-full flex justify-between items-center font-semibold text-sm px-4 bg-gray-100 py-2 before:absolute before:inset-0 before:w-0 hover:before:w-full before:bg-secon before:rounded-full before:transition-all  before:duration-300 before:ease-out gru"
         type="button"
         title="Add To Cart"
+        onClick={() => handleOpenDetailsProdcut(product)}
       >
-        $ {product.price}
+        $ {formatCurrency(product.price)}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 font-semibold text-sm group-hover:opacity-100  text-white">
           Buy Now
         </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import image from "../../assets/images/empty-boxpng.png";
+import image from "../../../assets/images/empty-boxpng.png";
 
 const NoProduct = () => {
   return (
