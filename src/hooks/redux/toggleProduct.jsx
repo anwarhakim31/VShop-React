@@ -12,17 +12,13 @@ const useToggleProduct = () => {
 
   const handleOpenProduct = () => {
     dispatch(isOpenProduct());
+    document.querySelector("body").classList.add("overflow-hidden");
   };
 
   const handleCloseProduct = () => {
     dispatch(isCloseProduct());
-  };
-
-  if (openProduct) {
-    document.querySelector("body").classList.add("overflow-hidden");
-  } else {
     document.querySelector("body").classList.remove("overflow-hidden");
-  }
+  };
 
   return { handleOpenProduct, openProduct, handleCloseProduct };
 };

@@ -6,7 +6,7 @@ const NoCartlist = () => {
   const handleToggleCart = useToggleCart();
 
   return (
-    <div className="mt-10 flex flex-col justify-center items-center">
+    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center items-center">
       <img src={emptyCartList} alt="empty" className="w-32 h-32 block " />
       <h1 className="font-medium text-gray-500 text-sm mt-4">
         Your cartlist is empty

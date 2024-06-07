@@ -12,7 +12,7 @@ const HomeProduct = (props) => {
   const [selectProductCategory, setSelectProductCategory] = useState([]);
   const [byFilter, setByFilter] = useState([]);
   const [notFound, setNotFound] = useState(false);
-  const { splitValue } = useSearch();
+  const { splitValue } = useSearch("");
   const { selectedOption, openFilter } = useFilter();
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const HomeProduct = (props) => {
         setSelectProductCategory(product);
       }
     }
-  }, [splitValue, selectCategory, loading, error]);
+  }, [splitValue, selectCategory, products]);
 
   useEffect(() => {
     let sortedProduct = [...selectProductCategory];
@@ -71,12 +71,11 @@ const HomeProduct = (props) => {
         <ServerError handleReload={handleReload} />
       ) : (
         <ul className=" w-full grid grid-cols-4 mobile:grid-cols-12 xl:grid-cols-10 gap-4 py-6 ">
-          {notFound && <NoProduct />}
-
           {!notFound &&
             byFilter.map((product) => (
               <CardList key={product.id} product={product} />
             ))}
+          {notFound && <NoProduct />}
         </ul>
       )}
     </>

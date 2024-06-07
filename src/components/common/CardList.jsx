@@ -35,7 +35,7 @@ const CardList = ({ product }) => {
         ...product,
         quantity: 1,
         totalPrice: product.price,
-        id: product.id,
+        point: product.id,
       })
     );
   };

@@ -8,7 +8,7 @@ const Footer = ({ loading }) => {
   useEffect(() => {
     // Update marginTop to mt-10 after component mounts
     const timer = setTimeout(() => {
-      setMarginTop("mt-9");
+      setMarginTop("mt-12");
     }, 5); // Adjust the timeout duration as needed
 
     return () => clearTimeout(timer); // Cleanup timeout on component unmount
@@ -16,7 +16,7 @@ const Footer = ({ loading }) => {
 
   return (
     <footer
-      className={`w-full ${loading ? "mt-9" : marginTop} p-6 bg-primary `}
+      className={`w-full ${loading ? "mt-12" : marginTop} p-6 bg-primary `}
     >
       <div className="container max-w-7xl mx-auto   px-5 sm:px-6 ">
         <p className="text-white text-center font-medium text-sm">

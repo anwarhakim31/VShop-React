@@ -27,6 +27,7 @@ const ProductModalElement = () => {
         ...isSelectedProduct,
         quantity: quantity + 1,
         totalPrice: price * (quantity + 1),
+        point: isSelectedProduct.id * (isSelectedProduct.quantity + 1),
       })
     );
   };
@@ -37,6 +38,7 @@ const ProductModalElement = () => {
         ...isSelectedProduct,
         quantity: quantity - 1,
         totalPrice: price * (quantity - 1),
+        point: isSelectedProduct.id * (isSelectedProduct.quantity + 1),
       })
     );
   };
@@ -83,7 +85,7 @@ const ProductModalElement = () => {
             <div className="rounded-full bg-yellow-100 flex items-center py-0.5 px-2">
               <FaStar className=" fill-yellow-400  text-sm mr-2" />{" "}
               <span className=" text-yellow-500 font-bold text-sm">
-                {isSelectedProduct?.rating.rate}
+                {isSelectedProduct?.rating?.rate}
               </span>
             </div>
           </div>

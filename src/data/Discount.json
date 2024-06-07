@@ -1,0 +1,12 @@
+{
+  "Discounts": [
+    {
+      "code": "HAKIM",
+      "value": 50
+    },
+    {
+      "code": "NEWUSER",
+      "value": 25
+    }
+  ]
+}

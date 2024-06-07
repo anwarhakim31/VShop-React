@@ -41,8 +41,13 @@ const HomePage = () => {
       } catch (error) {
         setError(true);
       }
-      setLoading(false);
+
+      const load = setTimeout(() => {
+        setLoading(false);
+      }, 100);
+      return () => clearTimeout(load);
     };
+
     getProduct();
   }, [reload]);
 

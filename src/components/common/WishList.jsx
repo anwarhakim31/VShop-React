@@ -16,7 +16,7 @@ const WishList = ({ item }) => {
   return (
     <div
       key={item.id}
-      className="flex items-center py-4 border-b-2 border-dotted border-gray-200 "
+      className="flex items-center py-4 border-b-2 border-dotted  border-gray-200 "
     >
       <div className="h-20 w-20 p-4">
         <img
