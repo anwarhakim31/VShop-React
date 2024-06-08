@@ -7,6 +7,10 @@
     {
       "code": "NEWUSER",
       "value": 25
+    },
+    {
+      "code": "VSHOP",
+      "value": 10
     }
   ]
 }
