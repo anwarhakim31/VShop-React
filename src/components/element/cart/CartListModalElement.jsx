@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addItemToCart,
   minusItemInCart,
+  removeInCart,
   selectDataCart,
 } from "../../../redux/slices/cartSlice";
 import { MdClose } from "react-icons/md";
@@ -26,6 +27,10 @@ const CartListModalElement = () => {
     rDispatch(minusItemInCart(product));
   };
 
+  const handleRemoveInCart = (id) => {
+    rDispatch(removeInCart(id));
+  };
+
   return (
     <>
       {dataInCart.length === 0 ? (
@@ -35,9 +40,9 @@ const CartListModalElement = () => {
           {dataInCart.map((product) => (
             <div
               key={product.id}
-              className="flex item-center border-xl border-b p-4 gap-4 border-gray-300"
+              className="flex items-center border-xl border-b p-4 gap-4 border-gray-300"
             >
-              <figure className="h-16 w-16 mx-auto">
+              <figure className="h-14 w-14 mx-auto">
                 <img
                   src={product.image}
                   alt={product.title}
@@ -54,14 +59,18 @@ const CartListModalElement = () => {
                       {product.category}
                     </span>
                   </div>
-                  <button aria-label="delete to cart" className="text-xl">
+                  <button
+                    aria-label="delete to cart"
+                    className="text-xl"
+                    onClick={() => handleRemoveInCart(product.id)}
+                  >
                     <MdClose />
                   </button>
                 </div>
-                <div className="flex justify-between items-center mt-4">
-                  <span className="font-medium text-md  text-gray-500">
+                <div className="flex justify-between items-center mt-2">
+                  <h6 className="font-bold">
                     $ {formatCurrency(product.price)} USD
-                  </span>
+                  </h6>
                   <div className="flex rounded-full border border-gray-300 items-center">
                     <button
                       aria-label="min-button"

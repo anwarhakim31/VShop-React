@@ -1,5 +1,11 @@
 // src/ModalFilter.js
-import React, { createContext, useEffect, useReducer, useState } from "react";
+import React, {
+  createContext,
+  useEffect,
+  useMemo,
+  useReducer,
+  useState,
+} from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import ModalWrapper from "../roots/ModalWrapper";
 import { useWish } from "../../context/WishListContext";
@@ -10,12 +16,14 @@ import {
   addItemToCart,
   discountApply,
   discountRemove,
+  selectDataCart,
   selectDiscountCode,
   selectDiscountIsApllied,
   selectDiscountValue,
   selectOpenCart,
   selectTotalItemCart,
   selectTotalPayment,
+  selectTotalPoint,
 } from "../../redux/slices/cartSlice";
 import { RiCoupon2Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,7 +33,8 @@ import { selectSelectedProduct } from "../../redux/slices/productSlice";
 import { formatCurrency } from "../../constant/constant";
 import discountJson from "../../data/Discount.json";
 import { MdClose } from "react-icons/md";
-const Modal = () => {
+import { Link } from "react-router-dom";
+const Modal = ({ handleOpenCheckout }) => {
   const { handleToggleWish, state } = useWish();
   const openCart = useSelector(selectOpenCart);
   const handToggleCart = useToggleCart();
@@ -39,6 +48,16 @@ const Modal = () => {
   const DiscountIsApplied = useSelector(selectDiscountIsApllied);
   const DiscountCode = useSelector(selectDiscountCode);
   const DiscoundValue = useSelector(selectDiscountValue);
+  const DiscountAmount = useMemo(
+    () => (DiscoundValue * totalPayment) / 100,
+    [totalPayment, DiscoundValue]
+  );
+  const TotalDiscountPrice = useMemo(
+    () => totalPayment - DiscountAmount,
+    [totalPayment, DiscountAmount]
+  );
+  const dataInCart = useSelector(selectDataCart);
+  const TotalPoint = useSelector(selectTotalPoint);
 
   const handleChangeInput = (e) => {
     setIsCode(e.target.value);
@@ -76,6 +95,33 @@ const Modal = () => {
     productFunction.handleCloseProduct();
   };
 
+  const handleCheckOut = () => {
+    const phone = 6281310635243;
+    const message =
+      encodeURIComponent(`Halo Admin,\nSaya ingin melakukan checkout untuk pembelian barang-barang berikut :
+     ${dataInCart.map(
+       (item, i) => `\n${i + 1} ${item.title} *Qty : ${item?.quantity}*`
+     )} \n \nTotal Barang : *${TotalItemCart}*   \nSubTotal : *$${formatCurrency(
+        totalPayment
+      )} USD*\n${
+        DiscountIsApplied && !DiscountCode !== 0
+          ? `Diskon : *${formatCurrency(
+              DiscountAmount
+            )} USD* (${DiscoundValue}%)\n`
+          : ""
+      }Total Pembayaran : *${formatCurrency(
+        TotalDiscountPrice
+      )} USD*\n\nMohon bantu konfirmasi ketersediaan stok dan informasi lanjut untuk proses pembayaran. Terima kasih!
+      `);
+
+    const URL_CHECKOUT = `https://api.whatsapp.com/send?phone=${phone}&text=${message}`;
+
+    window.open(URL_CHECKOUT, "__blank");
+
+    handToggleCart();
+    handleOpenCheckout();
+  };
+
   return (
     <ModalWrapper>
       <div
@@ -103,7 +149,9 @@ const Modal = () => {
           } h-full w-full`}
         >
           <div
-            className="primary-wishlist px-2 h-[52vh]  relative "
+            className={`${
+              openCart ? "h-[42vh]" : "h-[52vh]"
+            } primary-wishlist px-2   relative`}
             role="primary-modal"
           >
             {state.openWish && <WishListElement />}
@@ -127,12 +175,20 @@ const Modal = () => {
         {openCart && (
           <div className="border-t border-gray-300  pt-4  px-4  sticky bg-white bottom-0 left-0  w-full">
             <div
-              className={`relative flex items-center px-4 rounded-full border-2 tanslate-y border-gray-200 bg-gray-200 text-xl text-gray-400 font-medium`}
+              className={`${
+                DiscountIsApplied && DiscountCode === ""
+                  ? "border-red-500 bg-red-50 text-red-800"
+                  : "border-transparent bg-gray-200  text-gray-500"
+              } relative flex items-center px-4 rounded-full border-2 tanslate-y  text-xl font-medium  `}
             >
               <RiCoupon2Line className=" text-xl absolute top-1/2 -translate-y-[10px] left-4" />
               <input
                 type="text"
-                className="bg-gray-200 ml-8 mr-2 outline-none w-full placeholder:text-sm uppercase py-2.5 text-sm text-gray-500"
+                className={`${
+                  DiscountIsApplied && DiscountCode === ""
+                    ? "border-red-50 bg-red-50 text-red-800"
+                    : "border-transparent bg-gray-200  text-gray-500"
+                } ml-8 mr-2 outline-none w-full placeholder:text-sm uppercase border-2 py-2.5 text-sm`}
                 placeholder="ADD COUPON CODE"
                 onChange={handleChangeInput}
                 value={isCode}
@@ -150,7 +206,7 @@ const Modal = () => {
               </button>
               <button
                 className={`group ${
-                  DiscountIsApplied ? "block" : "hidden"
+                  DiscountIsApplied && DiscountCode !== "" ? "block" : "hidden"
                 } bg-lime-500 px-2 py-1 text-white font-medium rounded-full flex items-center hover:bg-secon`}
                 onClick={handleDiscountRemove}
               >
@@ -159,15 +215,75 @@ const Modal = () => {
                   <MdClose />
                 </div>
               </button>
+              <button
+                className={`group ${
+                  DiscountIsApplied && DiscountCode === "" ? "block" : "hidden"
+                } bg-primary px-1.5 py-1.5 text-white font-medium rounded-full flex items-center hover:bg-secon`}
+                onClick={handleDiscountRemove}
+              >
+                <MdClose />
+              </button>
             </div>
-            <div>
-              <div className="flex justify-between items-center mt-4">
-                <p>Total</p>
+            <p
+              className={`${
+                DiscountIsApplied && DiscountCode === "" ? "block" : "hidden"
+              } text-red-500 text-sm mt-2`}
+            >
+              Coupon code is invalid.{" "}
+              <Link
+                to={"https://github.com/anwarhakim31/VShop-React"}
+                target="__blank"
+                className=" underline"
+              >
+                Get your coupon code
+              </Link>
+            </p>
+
+            <div
+              className={`${
+                DiscountIsApplied && DiscountCode !== ""
+                  ? "flex items-center justify-between"
+                  : "hidden"
+              }  text-sm mt-4 text-gray-500`}
+            >
+              <p>Subtotal</p>
+              <p className="font-bold">${formatCurrency(totalPayment)}</p>
+            </div>
+
+            <div
+              className={`${
+                DiscountIsApplied && DiscountCode !== ""
+                  ? "flex items-center justify-between"
+                  : "hidden"
+              }  text-sm mt-1 text-gray-500`}
+            >
+              <p>Discount</p>
+              <p className="font-bold text-secon">
+                ${formatCurrency(DiscountAmount)}
+              </p>
+            </div>
+
+            <div className={`${!DiscountIsApplied ? "mt-4" : "mt-2"}`}>
+              <div className="flex justify-between items-center">
+                <p className="font-light">Total</p>
                 <span className="text-lg font-bold">
-                  $ {formatCurrency(totalPayment)} USD
+                  $ {formatCurrency(TotalDiscountPrice)} USD
                 </span>
               </div>
+              <div className="flex justify-between item-center">
+                <small className="text-gray-400 text-[11px]">{`With this order you will earn ${TotalPoint} points`}</small>
+                <small className="text-gray-400 text-[11px]">{`VAT include`}</small>
+              </div>
             </div>
+            <button
+              className={`
+            bg-primary rounded-xl text-sm font-bold py-4 px-4 mt-4 text-white w-full disabled:bg-gray-400 disabled:cursor-not-allowed`}
+              disabled={TotalItemCart === 0}
+              onClick={handleCheckOut}
+              aria-label="checkout button"
+            >
+              Proceed to Checkout (WhatsApp)
+            </button>
           </div>
         )}
       </div>

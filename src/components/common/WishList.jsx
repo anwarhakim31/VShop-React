@@ -2,8 +2,17 @@ import React from "react";
 import { useWish } from "../../context/WishListContext";
 import { IoMdClose } from "react-icons/io";
 import { formatCurrency } from "../../constant/constant";
+import { useDispatch } from "react-redux";
+import {
+  isOpenProduct,
+  selectOpenProduct,
+} from "../../redux/slices/productSlice";
+import { addItemToCart } from "../../redux/slices/cartSlice";
+import useToggleCart from "../../hooks/redux/toggleCart";
 const WishList = ({ item }) => {
   const { handleToggleWish, state, dispatch } = useWish();
+  const rDispatch = useDispatch();
+  const handleToggleCart = useToggleCart();
 
   const handleRemoveFromWishlist = (id) => {
     dispatch({ type: "DELETE_FROM_LIST", payload: id });
@@ -11,6 +20,24 @@ const WishList = ({ item }) => {
     if (state.wishlist.length === 1) {
       localStorage.removeItem("VShopWishlist");
     }
+  };
+
+  const handleOpenProductModal = (item) => {
+    handleToggleWish();
+
+    rDispatch(
+      addItemToCart({
+        ...item,
+        quantity: 1,
+        totalPrice: item.price,
+        point: item.id,
+      })
+    );
+    dispatch({ type: "DELETE_FROM_LIST", payload: item.id });
+
+    const openCart = setTimeout(() => handleToggleCart(), 200);
+
+    return () => clearTimeout(openCart);
   };
 
   return (
@@ -48,6 +75,7 @@ const WishList = ({ item }) => {
           <button
             aria-label="addToCart"
             className="py-1.5 px-4 rounded-lg bg-primary text-sm font-medium text-white hover:bg-secon"
+            onClick={() => handleOpenProductModal(item)}
           >
             Add To Cart
           </button>

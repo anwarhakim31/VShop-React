@@ -1,7 +1,42 @@
 import { createSlice } from "@reduxjs/toolkit";
+import CryptoJS from "crypto-js";
+
+const ENCRYPTION_KEY = "anwarhakim2024";
+
+const loadCartFromStorage = () => {
+  try {
+    const encryptedData = localStorage.getItem("vCart");
+
+    if (!encryptedData) {
+      return [];
+    }
+
+    const bytes = CryptoJS.AES.decrypt(encryptedData, ENCRYPTION_KEY);
+
+    const decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
+    return decryptedData || [];
+  } catch (error) {
+    console.error("Error loading cart from localStorage:", error);
+
+    return [];
+  }
+};
+
+const SaveCartToStorage = (cartData) => {
+  try {
+    const encryptedData = CryptoJS.AES.encrypt(
+      JSON.stringify(cartData),
+      ENCRYPTION_KEY
+    ).toString();
+    localStorage.setItem("vCart", encryptedData);
+  } catch (error) {
+    console.error("Error saving cart to localStorage:", error);
+  }
+};
 
 const initialState = {
-  data: [],
+  data: loadCartFromStorage(),
   openCart: false,
   coupon: {
     isApplied: false,
@@ -44,6 +79,7 @@ const cartSlice = createSlice({
           point: countPoint,
         });
       }
+      SaveCartToStorage(state.data);
     },
     minusItemInCart: (state, action) => {
       const selectIndex = state.data.findIndex(
@@ -62,6 +98,10 @@ const cartSlice = createSlice({
           });
         }
       }
+      SaveCartToStorage(state.data);
+    },
+    removeInCart: (state, action) => {
+      state.data = state.data.filter((item) => item.id !== action.payload);
     },
     discountApply: (state, action) => {
       state.coupon = {
@@ -69,6 +109,11 @@ const cartSlice = createSlice({
         ...action.payload,
       };
     },
+    clearCart: (state) => {
+      state.data = [];
+      SaveCartToStorage(state.data);
+    },
+
     discountRemove: (state) => {
       state.coupon = {
         isApplied: false,
@@ -85,6 +130,8 @@ export const {
   minusItemInCart,
   discountApply,
   discountRemove,
+  removeInCart,
+  clearCart,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
@@ -98,3 +145,5 @@ export const selectTotalPayment = (state) =>
 export const selectDiscountIsApllied = (state) => state.cart.coupon.isApplied;
 export const selectDiscountCode = (state) => state.cart.coupon.code;
 export const selectDiscountValue = (state) => state.cart.coupon.value;
+export const selectTotalPoint = (state) =>
+  state.cart.data.reduce((total, item) => total + item.point, 0);

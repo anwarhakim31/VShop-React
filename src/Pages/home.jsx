@@ -10,6 +10,7 @@ import ModalFilter from "../components/element/products/FilterModal";
 import Modal from "../components/fragments/Modal";
 import SearchProvider from "../hooks/Search";
 import FilterProvider from "..//hooks/filter";
+import Checkout from "../components/element/checkout/Checkout";
 
 const HomePage = () => {
   const [products, setProdutcs] = useState([]);
@@ -17,6 +18,17 @@ const HomePage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [reload, setReload] = useState(0);
+  const [dateTimeCheckout, setDateTimeCheckout] = useState(null);
+  const [isCheckout, setIsCheckout] = useState(false);
+
+  const handleOpenCheckout = () => {
+    setIsCheckout(true);
+    setDateTimeCheckout(new Date());
+  };
+
+  const handleCloseCheckout = () => {
+    setIsCheckout(false);
+  };
 
   const handleReload = () => {
     setReload(reload + 1); // Set reload state menjadi true
@@ -51,6 +63,14 @@ const HomePage = () => {
     getProduct();
   }, [reload]);
 
+  if (isCheckout) {
+    document.querySelector("body").classList.add("overflow-hidden");
+  } else {
+    document.querySelector("body").classList.remove("overflow-hidden");
+  }
+
+  console.log(isCheckout);
+
   return (
     <SearchProvider>
       <FilterProvider>
@@ -75,9 +95,14 @@ const HomePage = () => {
           </section>
         </main>
         <Footer loading={loading} />
-
+        {isCheckout ? (
+          <Checkout
+            CloseCheckout={handleCloseCheckout}
+            dateTime={dateTimeCheckout}
+          />
+        ) : null}
         <ModalFilter />
-        <Modal />
+        <Modal handleOpenCheckout={handleOpenCheckout} />
       </FilterProvider>
     </SearchProvider>
   );

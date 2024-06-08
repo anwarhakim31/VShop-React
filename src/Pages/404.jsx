@@ -8,7 +8,7 @@ const NotFoundPage = () => {
   return (
     <>
       <Header />
-      <section className="container max-w-7xl min-h-[calc(100vh-104px)]  text-center w-full  flex justify-center items-center flex-col">
+      <section className="container max-w-7xl min-h-[calc(100vh-104px)] mx-auto text-center w-full  flex justify-center items-center flex-col">
         <h1
           className={`flex items-center text-8xl lg:text-9xl font-[1000] bg-cover bg-clip-text text-transparent `}
           style={{ backgroundImage: `url(${backgroundImage})` }}
