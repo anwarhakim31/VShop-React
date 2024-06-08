@@ -69,8 +69,6 @@ const HomePage = () => {
     document.querySelector("body").classList.remove("overflow-hidden");
   }
 
-  console.log(isCheckout);
-
   return (
     <SearchProvider>
       <FilterProvider>

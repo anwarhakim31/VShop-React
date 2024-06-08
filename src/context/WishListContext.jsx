@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import CryptoJS from "crypto-js";
 
-const secretKey = "my-secret-key-12345"; // Contoh secret key
+const secretKey = import.meta.env.VITE_ENCRYPTION_KEY;
 
 const initialState = {
   wishlist: [],

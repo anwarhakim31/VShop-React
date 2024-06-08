@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import CryptoJS from "crypto-js";
 
-const ENCRYPTION_KEY = "anwarhakim2024";
+const ENCRYPTION_KEY = import.meta.env.VITE_ENCRYPTION_KEY;
 
 const loadCartFromStorage = () => {
   try {
@@ -102,6 +102,7 @@ const cartSlice = createSlice({
     },
     removeInCart: (state, action) => {
       state.data = state.data.filter((item) => item.id !== action.payload);
+      SaveCartToStorage(state.data);
     },
     discountApply: (state, action) => {
       state.coupon = {
