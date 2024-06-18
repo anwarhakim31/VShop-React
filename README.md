@@ -28,7 +28,8 @@ Before you begin, ensure you have the following installed on your machine:
 2. Navigate to the project directory:
 
    ```bash
-   cd vshop-spa
+   cd vshop-react
+   
    ```
 
 3. Install dependencies
