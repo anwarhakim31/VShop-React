@@ -27,6 +27,8 @@ body {
 
 ::-webkit-scrollbar {
   background-color: whitesmoke;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
